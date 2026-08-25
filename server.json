@@ -1,7 +1,7 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-07-09/server.schema.json",
   "name": "io.github.forgeagents-jp/oka-anywhere",
-  "description": "Your office's approved procedures inside Claude, ChatGPT, or any MCP client - verified citations or an honest refusal, never an invented answer.",
+  "description": "Your office's procedures inside Claude or ChatGPT - verified citations or an honest refusal.",
   "repository": {
     "url": "https://github.com/forgeagents-jp/oka-anywhere",
     "source": "github"
