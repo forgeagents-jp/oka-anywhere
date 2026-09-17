@@ -36,6 +36,7 @@ jobs:
           check "Marketing site"        "https://forgeagentsio.com/"                                            "200"
           check "Console healthz"       "https://console.forgeagentsai.com/healthz"                             "200"
           check "Connector (oka-mcp)"   "https://console.forgeagentsai.com/.well-known/oauth-authorization-server" "200"
+          check "Console model (strict=2)" "https://console.forgeagentsai.com/healthz?strict=2"                  "200"
           if [ -n "$FAILS" ]; then
             echo "status=down" >> "$GITHUB_OUTPUT"
             printf 'fails<<EOF\n%b\nEOF\n' "$FAILS" >> "$GITHUB_OUTPUT"
@@ -50,7 +51,7 @@ jobs:
           FAILS: ${{ steps.probe.outputs.fails }}
         run: |
           NUM=$(gh issue list -R "$GITHUB_REPOSITORY" --label uptime --state open --json number --jq '.[0].number')
-          BODY=$(printf 'Down at %s UTC (checked twice, 30s apart):\n\n%s\nRunbook: ssh to the VPS, `docker ps`, then `bash ops/deploy.sh <service>` from /opt/forge-console-new.' "$(date -u '+%Y-%m-%d %H:%M')" "$FAILS")
+          BODY=$(printf 'Down at %s UTC (checked twice, 30s apart):\n\n%s\nRunbook: ssh to the VPS, `docker ps`, then `bash ops/deploy.sh <service>` from /opt/forge-console-new. If the failing check is **Console model**: a model key is out of credit or the console is serving on its fallback — read `curl -s https://console.forgeagentsai.com/healthz`, fund the key it names (Anthropic console or Google AI Studio), or set MODEL_BACKEND in /opt/forge-console-new/.env and `docker compose up -d forge-console`. See D:\Forge\OPERATE-WITHOUT-CLAUDE.md.' "$(date -u '+%Y-%m-%d %H:%M')" "$FAILS")
           if [ -z "$NUM" ]; then
             gh label create uptime -R "$GITHUB_REPOSITORY" --color B60205 --force
             gh issue create -R "$GITHUB_REPOSITORY" --label uptime \
