@@ -36,8 +36,7 @@ jobs:
           check "Marketing site"        "https://forgeagentsio.com/"                                            "200"
           check "Console healthz"       "https://console.forgeagentsai.com/healthz"                             "200"
           check "Connector (oka-mcp)"   "https://console.forgeagentsai.com/.well-known/oauth-authorization-server" "200"
-          # Paused 2026-09-25 for scheduled maintenance; restore this line by 2026-10-01.
-          # check "Console model (strict=2)" "https://console.forgeagentsai.com/healthz?strict=2"                  "200"
+          check "Console model (strict=2)" "https://console.forgeagentsai.com/healthz?strict=2"                  "200"
           if [ -n "$FAILS" ]; then
             echo "status=down" >> "$GITHUB_OUTPUT"
             printf 'fails<<EOF\n%b\nEOF\n' "$FAILS" >> "$GITHUB_OUTPUT"
