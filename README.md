@@ -8,6 +8,31 @@ your procedures, it says so. It never invents an answer.
 **Connector address:** `https://console.forgeagentsai.com/mcp`
 **You need:** your **office token**, from the setup card we send when your office is onboarded.
 
+## Getting started
+
+**What it is.** OKA Anywhere is a remote MCP connector that lets Claude, ChatGPT, or another assistant that supports custom MCP connectors answer questions from your office's own approved procedures. Every answer cites the document it came from, and when your documentation does not cover something, it says so instead of guessing.
+
+**How an office gets access.**
+1. Subscribe at [forgeagentsio.com/oka-guide.html](https://forgeagentsio.com/oka-guide.html) ($149 a month per office).
+2. Within one business day you receive a setup card with the connector address and your office token.
+3. One person connects it once (below). When the connector opens the Forge consent page, paste the office token. Claude Code and scripts can skip the browser and send the token as a bearer token to the same address.
+
+**Connect it.** The connector address is `https://console.forgeagentsai.com/mcp`.
+- *Claude* (web, desktop, phone): Settings, Connectors, Add custom connector, paste the address, click Connect.
+- *ChatGPT* (Plus, Pro, Team): Settings, enable Developer mode, then Connectors, Create, paste the address, click Connect.
+
+**The four tools.**
+- `ask_procedures`: answers from your documents with machine-verified source quotes.
+- `verify_claim`: checks an exact statement against your documents, word for word.
+- `search_procedures`: finds the most relevant procedure passages.
+- `list_boundaries`: lists what your documentation explicitly does not cover.
+
+**Pricing.** $149 a month per office, no per-question charges.
+
+**Support.** daldridge@forgeagentsio.com
+
+**Test results.** Public tests are at [forgeagentsio.com/proof.html](https://forgeagentsio.com/proof.html).
+
 ## Add it — the whole flow
 
 ![How to add the OKA Anywhere connector: subscribe path branches by app — Claude settings, ChatGPT developer mode, or Claude Code bearer header — all converging on the Forge consent page, one token paste, four tools verified](oka-add-flow.svg)
