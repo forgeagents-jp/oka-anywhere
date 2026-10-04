@@ -1,12 +1,21 @@
 {
-  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-07-09/server.schema.json",
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.forgeagents-jp/oka-anywhere",
-  "description": "Your office's procedures inside Claude or ChatGPT - verified citations or an honest refusal.",
+  "title": "OKA Anywhere",
+  "description": "Answers staff questions only from your office's own procedures, with verified quotes or a refusal.",
   "repository": {
     "url": "https://github.com/forgeagents-jp/oka-anywhere",
     "source": "github"
   },
-  "version": "1.0.0",
+  "version": "1.0.1",
+  "websiteUrl": "https://forgeagentsio.com/oka-guide.html",
+  "icons": [
+    {
+      "src": "https://forgeagentsio.com/oka-logo-400.png",
+      "mimeType": "image/png",
+      "sizes": ["400x400"]
+    }
+  ],
   "remotes": [
     {
       "type": "streamable-http",
