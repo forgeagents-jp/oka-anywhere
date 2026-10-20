@@ -2,11 +2,13 @@
 
 OKA Anywhere is a remote MCP server. There is nothing to download, build or run locally. You add one URL and one office token.
 
+OKA Anywhere is built for Claude and ChatGPT. Other MCP clients, Cline included, may also work, but we do not promise them.
+
 ## What you need
 
 - Server URL: `https://console.forgeagentsai.com/mcp`
 - Transport: streamable HTTP
-- An office token from an OKA Anywhere subscription (the setup card Forge Agents sends when an office is onboarded). Ask the user for it. Never invent one, and never write it into a file that gets committed.
+- An office token from an OKA Anywhere subscription or 14-day free trial. The office sees it on the welcome page right after checkout. Ask the user for it. Never invent one, and never write it into a file that gets committed. If the office has no token yet, it can start the 14-day free trial through Stripe checkout at https://forgeagentsio.com/oka.html.
 
 ## Authentication
 

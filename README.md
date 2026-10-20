@@ -1,42 +1,62 @@
-# OKA Anywhere: your office's procedures inside your AI assistant
+# OKA Anywhere: your office's procedures inside Claude or ChatGPT
 
-**OKA Anywhere** is a remote MCP connector by [Forge Agents LLC](https://forgeagentsio.com). It
-gives Claude, ChatGPT, Cline, or any MCP-capable assistant four tools that answer **only from your
-office's approved procedures**, with verified citations, and refuse to guess. If it cannot quote
-your procedures, it says so. It never invents an answer.
+**OKA Anywhere** is a remote MCP connector by [Forge Agents LLC](https://forgeagentsio.com) for
+small offices that run on documented procedures, such as property management companies,
+home-service and trade shops, and insurance agencies. It connects Claude or ChatGPT to your
+office's own procedures; other assistants that support custom MCP connectors may work, but we do
+not promise them. Staff ask in the chat they already have open; answers come only from your
+office's approved procedures, with verified citations, and if your documents don't cover it, it
+says so.
 
 | | |
 | --- | --- |
 | **Connector address** | `https://console.forgeagentsai.com/mcp` |
 | **Transport** | Streamable HTTP, stateless |
-| **Sign-in** | OAuth consent page (paste your office token once), or `Authorization: Bearer <office token>` for scripts and Claude Code |
-| **You need** | Your **office token**, from the setup card we send when your office is onboarded |
+| **Sign-in** | OAuth consent page (paste your office token when you connect), or `Authorization: Bearer <office token>` for scripts and Claude Code |
+| **You need** | Your **office token**, shown on the welcome page right after you subscribe or start the 14-day free trial |
 | **Price** | $149 a month per office, no per-question charges |
+| **Free trial** | 14 days through Stripe checkout. Stripe collects a card, and you are not charged if you cancel before the 14 days end |
+| **Website** | [forgeagentsio.com/oka.html](https://forgeagentsio.com/oka.html) |
+| **Setup guide** | [forgeagentsio.com/oka-guide.html](https://forgeagentsio.com/oka-guide.html) |
 | **Support** | daldridge@forgeagentsio.com |
 
 ## What it does
 
 Every office has its own set of approved procedure documents. OKA Anywhere puts that set behind four
 tools, so anyone on staff can ask their own assistant "how do we handle this?" and get an answer
-that names the document it came from and quotes it. Each quote is checked word for word against the
-source before it is shown. When the documentation does not cover a question, the assistant says so
-plainly and says who to ask. A refusal is the correct answer in that case, not a fault.
+that names the document it came from and quotes it. Each quote in its Sources list is checked word
+for word against the source before the tool returns it. When the documentation does not cover a
+question, OKA Anywhere says so plainly. A refusal is the correct answer in that case, not a fault.
+
+The tools return only what your documents say, with every quote checked against the source. Your
+assistant writes its own reply around them, so check the Sources it shows.
 
 ## Getting started
 
-1. Subscribe at [forgeagentsio.com/oka-guide.html](https://forgeagentsio.com/oka-guide.html) ($149 a month per office).
-2. Within one business day you receive a setup card with the connector address and your office token.
-3. One person connects it once (below). When the connector opens the Forge consent page, paste the office token.
+1. Go to [forgeagentsio.com/oka.html](https://forgeagentsio.com/oka.html) and click **Subscribe: $149/month**.
+   Stripe checkout starts you on 14 days free, and you are not charged if you cancel before the 14 days end.
+2. After checkout, you land on a welcome page with your connector address and office token right away.
+   It shows the token for 30 minutes, and only in the browser where you first open it, so copy it
+   somewhere safe. New offices start with a sample office's procedures; when you are ready, upload your own from the
+   welcome page (Load your procedures), or later at
+   [console.forgeagentsai.com/office/procedures](https://console.forgeagentsai.com/office/procedures),
+   and the same token answers from them a few minutes later.
+3. Connect it (below). When the connector opens the Forge consent page, paste the office token. The
+   page asks each time someone connects, so on a plan where each person clicks Connect, each person
+   pastes it once.
+
+Upload office procedures and policies only, never patient, client or personnel records.
 
 ## Connect it
 
-![How to add the OKA Anywhere connector: the path branches by app (Claude settings, ChatGPT developer mode, or a Claude Code bearer header), then all of them meet at the Forge consent page, one token paste, and four tools verified](oka-add-flow.svg)
+**Claude** (set up on the web or desktop, then it works on your phone too): Customize → Connectors →
+\+ Add → Add custom connector. On a Team or Enterprise plan, an owner adds it first under
+Organization settings → Connectors, then each person clicks Connect. Paste the address, click
+Connect, and paste your office token on the Forge page that opens.
 
-**Claude** (web, desktop, phone): Settings, then Connectors, then Add custom connector. Paste the
-address, click Connect, and paste your office token on the Forge page that opens.
-
-**ChatGPT** (Plus, Pro, Team): Settings, turn on Developer mode, then Connectors, then Create. Paste
-the address, click Connect, and paste your office token on the Forge page.
+**ChatGPT** (Business, Enterprise or Edu on the web, added by an admin or owner; Pro works too):
+Plugins → + → Add custom MCP server. Paste the address, choose OAuth, and paste your office token
+on the Forge page that opens.
 
 **Claude Code** (no browser needed):
 
@@ -45,12 +65,10 @@ claude mcp add --transport http oka-anywhere https://console.forgeagentsai.com/m
   --header "Authorization: Bearer YOUR_OFFICE_TOKEN"
 ```
 
-**Cline**: add a remote server with the same address and an `Authorization` header. The exact steps,
+**Other MCP clients** may also work, but we do not promise them. Use the address above with
+Streamable HTTP. A client that cannot send headers is sent to the consent page. A client that can
+send headers can use the office token as a bearer token on the same address. Steps for Cline,
 written so an agent can follow them, are in [llms-install.md](llms-install.md).
-
-**Any other MCP client**: use the address above with Streamable HTTP. A client that cannot send
-headers is sent to the consent page. A client that can send headers can use the office token as a
-bearer token on the same address.
 
 After connecting, the client lists four tools and three ready-made prompts.
 
@@ -64,7 +82,7 @@ can treat them as safe to run.
 | --- | --- | --- | --- |
 | `ask_procedures` | Answers a question from your documents, with a Sources list of verified quotes | `question` | Yes. Every citation is machine-verified against your documents |
 | `verify_claim` | Checks whether an exact sentence appears word for word in your documents | `claim` | No |
-| `search_procedures` | Finds the three most relevant passages for a topic | `query` | No |
+| `search_procedures` | Finds up to three of the most relevant passages for a topic | `query` | No |
 | `list_boundaries` | Lists what your documentation explicitly forbids or does not cover | none | No |
 
 Each tool also takes an optional `corpus` field. Leave it out: it defaults to your office's own
@@ -106,10 +124,10 @@ Tool calls look like this:
 ## Troubleshooting
 
 - **"Couldn't reach the MCP server"**: paste the address again, exactly: `https://console.forgeagentsai.com/mcp`
-- **"That token was not recognized"**: tokens rotate when re-issued, so use the newest setup card.
+- **"That token was not recognized"**: tokens rotate when re-issued, so use the newest one.
   If you lost it, email support and we will rotate you a fresh one in minutes.
 - **The assistant refuses to answer something**: call `list_boundaries` first. Usually the topic is
-  not in your documentation yet. Send us the document and it will be.
+  not in your documentation yet. Add the missing document to your files and upload them again.
 - **Rate limit message**: each office token allows 60 tool calls an hour. Try again next hour.
 
 ## Server card
@@ -119,12 +137,23 @@ Directories that cannot sign in can read the public server card at
 It is built from the live tool list, so it always matches what a signed-in client sees, and it never
 contains an office token or any office document.
 
-## Data stance
+## Your data
 
-Your corpus serves only your office. Calls are logged for support and metering. Nothing trains
-anything.
+Your documents serve only your office. They are held on our server so OKA can answer from them.
+To generate cited answers, ask_procedures sends your procedures and the question to Google's
+Gemini API, under its business API terms, which do not allow this data to be used to train its
+models. The other three tools use no model. We never use your documents to train models, and we
+delete them within 30 days after your subscription ends, or sooner if you ask. Backup copies are
+deleted as the backup cycle turns over.
+
+Calls are logged for support and metering: when, which office and which tool, how long it took and
+whether it worked, with token counts, never the question text.
+
+Your staff ask inside Claude or ChatGPT, under your office's own account with that assistant, and
+that assistant keeps the chat history under its own terms.
 
 ---
-**Support:** daldridge@forgeagentsio.com · **Connector:** https://console.forgeagentsai.com/mcp ·
+**Support:** daldridge@forgeagentsio.com · **Website:** [forgeagentsio.com/oka.html](https://forgeagentsio.com/oka.html) ·
+**Connector:** https://console.forgeagentsai.com/mcp ·
 **Test results:** [forgeagentsio.com/proof.html](https://forgeagentsio.com/proof.html) ·
 **Privacy:** https://forgeagentsio.com/privacy.html · $149 a month per office, no per-question charges.

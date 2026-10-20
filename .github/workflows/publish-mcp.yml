@@ -1,0 +1,49 @@
+# Proposed .github/workflows/publish-mcp.yml for github.com/forgeagents-jp/oka-anywhere
+# Publishes server.json to the official MCP Registry with GitHub OIDC: no secret, no device login.
+# The registry grants io.github.<repository_owner>/* to an OIDC token from this repo,
+# so a run here can publish io.github.forgeagents-jp/oka-anywhere.
+# It runs when a push to main changes server.json (or by hand from the Actions tab).
+# A version string can be published once only; a run with an already published version fails
+# at the publish step and changes nothing.
+name: Publish to MCP Registry
+
+on:
+  push:
+    branches: [main]
+    paths: [server.json]
+  workflow_dispatch:
+
+concurrency:
+  group: mcp-registry-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      id-token: write   # needed for the GitHub OIDC login
+      contents: read
+    steps:
+      - name: Check out
+        uses: actions/checkout@v5
+
+      - name: Install mcp-publisher v1.8.1
+        # v1.8.1 is the latest release (2026-08-06). If the login step says "invalid audience",
+        # move this to the newest release.
+        run: |
+          curl -fsSL "https://github.com/modelcontextprotocol/registry/releases/download/v1.8.1/mcp-publisher_linux_amd64.tar.gz" | tar xz mcp-publisher
+          ./mcp-publisher --version
+
+      - name: Validate server.json
+        run: ./mcp-publisher validate server.json
+
+      - name: Log in with GitHub OIDC
+        run: ./mcp-publisher login github-oidc
+
+      - name: Publish
+        run: ./mcp-publisher publish server.json
+
+      - name: Show what the registry now lists
+        run: |
+          curl -fsS "https://registry.modelcontextprotocol.io/v0.1/servers?search=io.github.forgeagents-jp/oka-anywhere"
