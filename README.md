@@ -1,5 +1,7 @@
 # OKA Anywhere: your office's procedures inside Claude or ChatGPT
 
+[![OKA Anywhere on mcprush](https://mcprush.com/badge/oka-anywhere-mcp/score.svg)](https://mcprush.com/to/oka-anywhere-mcp?ref=badge)
+
 **OKA Anywhere** is a remote MCP connector by [Forge Agents LLC](https://forgeagentsio.com) for
 small offices that run on documented procedures, such as property management companies,
 home-service and trade shops, and insurance agencies. It connects Claude or ChatGPT to your
