@@ -72,18 +72,18 @@ The reply names four tools. A 401 means the token is missing, mistyped or expire
 
 ## Tools
 
-After connecting, Cline should list four tools. In the CLI each one shows with the server name in front, for example `oka-anywhere__ask_procedures`.
+After connecting, Cline should list four tools. In the CLI each one shows with the server name in front, for example `oka-anywhere__ask_office_policies_and_procedures`.
 
-- `ask_procedures`: answers from the office's own documents with verified source quotes.
-- `verify_claim`: checks an exact statement against the documents, word for word.
-- `search_procedures`: finds the most relevant procedure passages.
-- `list_boundaries`: lists what the documentation explicitly does not cover.
+- `ask_office_policies_and_procedures`: answers from the office's own documents with verified source quotes.
+- `verify_office_procedure_quote`: checks an exact statement against the documents, word for word.
+- `search_office_policies_and_procedures`: finds the most relevant procedure passages.
+- `list_office_procedure_boundaries`: lists what the documentation explicitly does not cover.
 
 All four only read. None of them changes anything.
 
 ## Verify it works
 
-1. Ask Cline to call `list_boundaries`. It should return a list of topics the documentation does not cover.
+1. Ask Cline to call `list_office_procedure_boundaries`. It should return a list of topics the documentation does not cover.
 2. Ask a question about a procedure, for example "What is our policy on same-day cancellations?" A good answer names the source document and quotes it.
 3. Ask about something outside the documents. A good answer says plainly that the documentation does not cover it. A refusal here is correct behavior, not a fault.
 
@@ -92,7 +92,7 @@ All four only read. None of them changes anything.
 - 401 or "token not recognized": the token is missing, mistyped or expired. Tokens rotate when re-issued, so use the newest one. Check that the header reads `Bearer ` followed by the token, with one space.
 - "Couldn't reach the server": check the URL is exactly `https://console.forgeagentsai.com/mcp` and the transport is streamable HTTP, not SSE or stdio.
 - The server connects but shows no tools: in the CLI, start a new session. Otherwise remove the entry, add it again, and restart Cline.
-- The assistant declines a question: call `list_boundaries` first. Usually the topic is not in the office's documentation yet.
+- The assistant declines a question: call `list_office_procedure_boundaries` first. Usually the topic is not in the office's documentation yet.
 - A request fails with 406 when you call the server directly: send `Accept: application/json, text/event-stream`.
 
 ## Support

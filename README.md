@@ -82,10 +82,15 @@ can treat them as safe to run.
 
 | Tool | What it does | Input | Uses a model? |
 | --- | --- | --- | --- |
-| `ask_procedures` | Answers a question from your documents, with a Sources list of verified quotes | `question` | Yes. Every citation is machine-verified against your documents |
-| `verify_claim` | Checks whether an exact sentence appears word for word in your documents | `claim` | No |
-| `search_procedures` | Finds up to three of the most relevant passages for a topic | `query` | No |
-| `list_boundaries` | Lists what your documentation explicitly forbids or does not cover | none | No |
+| `ask_office_policies_and_procedures` | Answers a question from your documents, with a Sources list of verified quotes | `question` | Yes. Every citation is machine-verified against your documents |
+| `verify_office_procedure_quote` | Checks whether an exact sentence appears word for word in your documents | `claim` | No |
+| `search_office_policies_and_procedures` | Finds up to three of the most relevant passages for a topic | `query` | No |
+| `list_office_procedure_boundaries` | Lists what your documentation explicitly forbids or does not cover | none | No |
+
+Versions before 1.2.0 used shorter tool names (`ask_procedures`, `verify_claim`, `search_procedures`,
+`list_boundaries`). A call that uses one of those names is still answered, so nothing you have set up breaks.
+The longer names say what the tools are for, which helps an assistant find them when it is shown tool
+names only.
 
 Each tool also takes an optional `corpus` field. Leave it out: it defaults to your office's own
 document set, and an id that is not yours is refused.
@@ -97,30 +102,30 @@ to keep the refusal rule. They carry no office text.
 
 | Prompt | Input | What it asks for |
 | --- | --- | --- |
-| `ask-a-procedure-question` | `question` | An answer from `ask_procedures` with its Sources, and `list_boundaries` if the topic is not covered |
-| `verify-a-statement` | `statement` | An exact check with `verify_claim`, then the closest passages from `search_procedures` if it is not found |
+| `ask-a-procedure-question` | `question` | An answer from `ask_office_policies_and_procedures` with its Sources, and `list_office_procedure_boundaries` if the topic is not covered |
+| `verify-a-statement` | `statement` | An exact check with `verify_office_procedure_quote`, then the closest passages from `search_office_policies_and_procedures` if it is not found |
 | `show-what-is-not-covered` | none | Everything the documentation says it does not cover, grouped by document |
 
 ## Examples
 
 Questions to ask your assistant once it is connected:
 
-- "What is our policy on same-day cancellations?" The assistant calls `ask_procedures` and answers
+- "What is our policy on same-day cancellations?" The assistant calls `ask_office_policies_and_procedures` and answers
   with the source document and a quote.
-- "Does our handbook say refunds are issued within 14 days?" It calls `verify_claim`. It reports
+- "Does our handbook say refunds are issued within 14 days?" It calls `verify_office_procedure_quote`. It reports
   VERIFIED with the document and surrounding text, or says the sentence is not in the documents
   word for word.
-- "Show me what we have on opening procedures." It calls `search_procedures` and returns up to three
+- "Show me what we have on opening procedures." It calls `search_office_policies_and_procedures` and returns up to three
   excerpts with their document titles.
-- "What do our procedures say they do not cover?" It calls `list_boundaries`.
+- "What do our procedures say they do not cover?" It calls `list_office_procedure_boundaries`.
 
 Tool calls look like this:
 
 ```json
-{ "name": "ask_procedures", "arguments": { "question": "What is our policy on same-day cancellations?" } }
-{ "name": "verify_claim", "arguments": { "claim": "Refunds are issued within 14 days." } }
-{ "name": "search_procedures", "arguments": { "query": "late cancellation fee" } }
-{ "name": "list_boundaries", "arguments": {} }
+{ "name": "ask_office_policies_and_procedures", "arguments": { "question": "What is our policy on same-day cancellations?" } }
+{ "name": "verify_office_procedure_quote", "arguments": { "claim": "Refunds are issued within 14 days." } }
+{ "name": "search_office_policies_and_procedures", "arguments": { "query": "late cancellation fee" } }
+{ "name": "list_office_procedure_boundaries", "arguments": {} }
 ```
 
 ## Troubleshooting
@@ -128,7 +133,7 @@ Tool calls look like this:
 - **"Couldn't reach the MCP server"**: paste the address again, exactly: `https://console.forgeagentsai.com/mcp`
 - **"That token was not recognized"**: tokens rotate when re-issued, so use the newest one.
   If you lost it, email support and we will rotate you a fresh one in minutes.
-- **The assistant refuses to answer something**: call `list_boundaries` first. Usually the topic is
+- **The assistant refuses to answer something**: call `list_office_procedure_boundaries` first. Usually the topic is
   not in your documentation yet. Add the missing document to your files and upload them again.
 - **Rate limit message**: each office token allows 60 tool calls an hour. Try again next hour.
 
@@ -142,7 +147,7 @@ contains an office token or any office document.
 ## Your data
 
 Your documents serve only your office. They are held on our server so OKA can answer from them.
-To generate cited answers, ask_procedures sends your procedures and the question to Google's
+To generate cited answers, ask_office_policies_and_procedures sends your procedures and the question to Google's
 Gemini API, under its business API terms, which do not allow this data to be used to train its
 models. The other three tools use no model. We never use your documents to train models, and we
 delete them within 30 days after your subscription ends, or sooner if you ask. Backup copies are
